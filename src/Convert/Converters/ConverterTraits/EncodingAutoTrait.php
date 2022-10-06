@@ -67,6 +67,7 @@ trait EncodingAutoTrait
         $this->logReduction($this->getSource(), $destinationLossless);
         $this->ln();
 
+		if (!file_exists($destinationLossless) && !file_exists($destinationLossy)) return;
         if (filesize($destinationLossless) > filesize($destinationLossy)) {
             $this->logLn('Picking lossy');
             @unlink($destinationLossless);
