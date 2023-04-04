@@ -69,10 +69,10 @@ trait DestinationPreparationTrait
         // So, to be absolute sure that we cannot write, we make an actual write test (writing a dummy file)
         // No harm in doing that for non-Windows systems either.
         if (file_put_contents($destination, 'dummy') !== false) {
-			if (file_exists($destination)) {
-				// all is well, after all
-				unlink($destination);
-			}
+		if (file_exists($destination)) {
+			// all is well, after all
+			unlink($destination);
+		}
             return;
         }
 
@@ -93,7 +93,7 @@ trait DestinationPreparationTrait
         if (file_exists($destination)) {
             // A file already exists in this folder...
             // We delete it, to make way for a new webp
-            if (!unlink($destination)) {
+            if (!@unlink($destination)) {
                 throw new CreateDestinationFileException(
                     'Existing file cannot be removed: ' . basename($destination)
                 );
