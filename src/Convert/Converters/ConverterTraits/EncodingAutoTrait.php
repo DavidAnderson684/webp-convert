@@ -67,16 +67,24 @@ trait EncodingAutoTrait
         $this->logReduction($this->getSource(), $destinationLossless);
         $this->ln();
 
-		if (!file_exists($destinationLossless) && !file_exists($destinationLossy)) return;
-        if (filesize($destinationLossless) > filesize($destinationLossy)) {
-            $this->logLn('Picking lossy');
-            @unlink($destinationLossless);
-            @rename($destinationLossy, $destination);
-        } else {
-            $this->logLn('Picking lossless');
-            @unlink($destinationLossy);
-            @rename($destinationLossless, $destination);
-        }
+	if (file_exists($destinationLossless) && file_exists($destinationLossy)) {
+		if (filesize($destinationLossless) > filesize($destinationLossy)) {
+			$this->logLn('Picking lossy');
+			unlink($destinationLossless);
+			rename($destinationLossy, $destination);
+		} else {
+			$this->logLn('Picking lossless');
+			unlink($destinationLossy);
+			rename($destinationLossless, $destination);
+		}
+	} else {
+		if (file_exists($destinationLossless)) {
+			rename($destinationLossless, $destination);
+		}
+		if (file_exists($destinationLossy)) {
+			rename($destinationLossy, $destination);
+		}
+	}
         $this->setDestination($destination);
         $this->setOption('encoding', 'auto');
     }
